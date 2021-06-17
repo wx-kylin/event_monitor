@@ -60,16 +60,11 @@ void EventMonitor::run()
 
     XSync(display, True);
 
-    Display* display_datalink = XOpenDisplay(0);
-    if (display_datalink == 0) {
-        fprintf(stderr, "unable to open second display\n");
-        return;
-    }
-
-    if (!XRecordEnableContext(display_datalink, context,  callback, (XPointer) this)) {
+    if (!XRecordEnableContext(display, context,  callback, (XPointer) this)) {
         fprintf(stderr, "XRecordEnableContext() failed\n");
         return;
     }
+    XCloseDisplay(display);
 }
 
 void EventMonitor::callback(XPointer ptr, XRecordInterceptData* data)
